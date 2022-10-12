@@ -24,7 +24,7 @@ app.use(
 
 //ROUTES
 
-//GET ALL CHARACTERS
+//GET all tour dulich 24h
 app.get("/v1", async (req, resp) => {
   const thumbnails = [];
   // const limit = Number(req.query.limit);
@@ -49,7 +49,7 @@ app.get("/v1", async (req, resp) => {
   }
 });
 
-//GET A CHARACTER
+//GET detail tour dulich 24h
 app.get("/v1/:place", async (req, resp) => {
   const thumbnails = [];
   const place = req.params.place;
@@ -162,6 +162,42 @@ app.post("/api/get-tours", async (req, res) => {
       });
     });
     res.status(200).json(thumbnails);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+})
+
+// get description, image from google by name
+app.post("/api/get-description-marker", async (req, res) => {
+  const imageArr = [];
+  const descriptionArr = [];
+  // const url = "https://www.google.com/search?q=" + req.body.name;
+  const url = "https://search.aol.com/aol/search?q=" + req.body.name;
+  console.log(url);
+  try {
+    await axios(url).then((res) => {
+      let html = res.data;
+      console.log(html);
+
+      const $ = cheerio.load(html);
+      // console.log($);
+      $(".thmb", html).each(function () {
+        const image = $(this).find("img.s-img").attr("src");
+        if (image.includes("http")) {
+          imageArr.push({
+            image: image
+          });
+        }
+      });
+      $(".compText", html).each(function () {
+        let description = $(this).find("p.lh-16").html();
+        // description = description.replace(/(<([^>]+)>)/ig, "");
+        descriptionArr.push({
+          description: description
+        });
+      });
+    });
+    res.status(200).json({ imageArr, descriptionArr });
   } catch (err) {
     res.status(500).json(err);
   }
