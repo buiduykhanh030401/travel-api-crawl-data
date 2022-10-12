@@ -81,62 +81,6 @@ app.get("/v1/:place", async (req, resp) => {
   } catch (err) {
     resp.status(500).json(err);
   }
-  // const titles = [];
-  // const details = [];
-  // const galleries = [];
-  // const characters = [];
-  // const characterObj = {};
-
-  // try {
-  //   axios(url).then((res) => {
-  //     const html = res.data;
-  //     const $ = cheerio.load(html);
-
-  //     //Get gallery
-  //     $(".wikia-gallery-item", html).each(function () {
-  //       const gallery = $(this).find("a > img").attr("data-src");
-  //       galleries.push(gallery);
-  //     })
-
-
-  //     $("aside", html).each(function () {
-  //       // Get banner image
-  //       const image = $(this).find("img").attr("src");
-
-  //       //Get the title of character title
-  //       $(this)
-  //         .find("section > div > h3")
-  //         .each(function () {
-  //           titles.push($(this).text());
-  //         });
-
-  //       // Get character details
-  //       $(this)
-  //         .find("section > div > div")
-  //         .each(function () {
-  //           details.push($(this).text());
-  //         });
-
-  //       if (image !== undefined) {
-  //         // Create object with title as key and detail as value
-  //         for (let i = 0; i < titles.length; i++) {
-  //           characterObj[titles[i].toLowerCase()] = details[i];
-  //         }
-
-  //         characters.push({
-  //           name: req.params.character.replace("_", " "),
-  //           gallery: galleries,
-  //           image: image,
-  //           ...characterObj,
-  //         });
-  //       }
-  //     });
-
-  //     resp.status(200).json(characters);
-  //   });
-  // } catch (err) {
-  //   resp.status(500).json(err);
-  // }
 });
 const getTours = async (url, thumbnails) => {
   await axios(url).then((res) => {
@@ -225,5 +169,5 @@ app.post("/api/get-tours", async (req, res) => {
 
 // RUN PORT
 app.listen(process.env.PORT || 8000, () => {
-  console.log("Server is running...");
+  console.log("Server is running... ");
 });
