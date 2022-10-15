@@ -339,6 +339,38 @@ app.post("/api/get-detail-next", async (req, res) => {
   }
 })
 
+// search tour
+app.post("/api/search-tour", async (req, res) => {
+  const thumbnails = [];
+  const url = req.body.url;
+  try {
+    await axios(url).then((res) => {
+      const html = res.data;
+      const $ = cheerio.load(html);
+      $(".promotion-search-result__result__item", html).each(function () {
+
+        const next = $(this).find("div.tour-item__image> a").attr("href");
+        const title = $(this).find("div.tour-item__image> a").attr("title");
+        const image = $(this).find("div.tour-item__image> a > img").attr("src");
+        const tourdate = $(this).find("div.card-body > p").text();
+        const price = $(this).find("span.tour-item__price--current__number").text();
+
+        thumbnails.push({
+          next: travelURL + next.replace("/", ""),
+          title: title,
+          image: image,
+          tourdate: tourdate,
+          price: price
+        });
+      });
+    });
+    res.status(200).json(thumbnails);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+})
+
+
 // RUN PORT
 app.listen(process.env.PORT || 8000, () => {
   console.log("Server is running... ");
