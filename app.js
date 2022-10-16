@@ -126,8 +126,8 @@ app.get("/api/get-tours", async (req, resp) => {
   let url2 = `${travelURL}du-lich-gio-chot-p2.aspx`;
   try {
     await getTours(url, thumbnails);
-    await getTours(url1, thumbnails);
-    await getTours(url2, thumbnails);
+    // await getTours(url1, thumbnails);
+    // await getTours(url2, thumbnails);
     resp.status(200).json(thumbnails);
   } catch (err) {
     resp.status(500).json(err);
